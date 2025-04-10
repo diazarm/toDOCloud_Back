@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error(err));
 
 // Rutas
-const todoRoutes = require('./routes/todos');
+const todoRoutes = require('./src/routes/todos');
 app.use('/api/todos', todoRoutes);
 
 const PORT = process.env.PORT || 5000;
