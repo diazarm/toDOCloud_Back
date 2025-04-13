@@ -27,12 +27,14 @@ router.post('/', async (req, res) => {
 });
 
 // Actualizar todo
-router.patch('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
+    console.log(todo)
     if (!todo) return res.status(404).json({ message: 'Todo no encontrado' });
     
     todo.completed = req.body.completed;
+    todo.text = req.body.text;
     const updatedTodo = await todo.save();
     res.json(updatedTodo);
   } catch (err) {
@@ -43,8 +45,9 @@ router.patch('/:id', async (req, res) => {
 // Eliminar todo
 router.delete('/:id', async (req, res) => {
   try {
-    await Todo.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Todo eliminado' });
+    const id = req.params.id
+    await Todo.findByIdAndDelete(id);
+    res.json({ message: `ID: ${id} eliminado` });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
