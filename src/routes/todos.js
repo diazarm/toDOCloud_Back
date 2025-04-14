@@ -29,18 +29,22 @@ router.post('/', async (req, res) => {
 // Actualizar todo
 router.put('/:id', async (req, res) => {
   try {
+    if (typeof req.body.completed !== 'boolean') {
+      return res.status(400).json({ message: 'El campo "completed" debe ser booleano' });
+    }
+
     const todo = await Todo.findById(req.params.id);
-    console.log(todo)
     if (!todo) return res.status(404).json({ message: 'Todo no encontrado' });
-    
+
     todo.completed = req.body.completed;
-    todo.text = req.body.text;
     const updatedTodo = await todo.save();
     res.json(updatedTodo);
   } catch (err) {
+    console.error(err);
     res.status(400).json({ message: err.message });
   }
 });
+
 
 // Eliminar todo
 router.delete('/:id', async (req, res) => {
